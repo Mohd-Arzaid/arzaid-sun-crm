@@ -1,3 +1,4 @@
+import { setUserPassword } from "@/api-services/auth-api";
 import { useAuthStore } from "@/store/auth-store";
 import { ArrowRight, Eye, EyeOff, KeyRound } from "lucide-react";
 import React, { useState } from "react";
@@ -10,7 +11,6 @@ const Admin = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
 
   const loading = useAuthStore((state) => state.loading);
-  const setLoading = useAuthStore((state) => state.setLoading);
 
   const [formData, setFormData] = useState({
     adminSecretKey: "",
@@ -27,11 +27,10 @@ const Admin = () => {
     }));
   };
 
-  const handleAdminSubmit = (e) => {
+  const handleAdminSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     console.log("FORM DATA : ", formData);
-    setLoading(false);
+    await setUserPassword(userEmail, newPassword, adminSecretKey);
   };
 
   return (
@@ -63,6 +62,7 @@ const Admin = () => {
                   value={adminSecretKey}
                   onChange={handleOnChange}
                   placeholder="••••••••"
+                  required
                   className={`${inputField} pl-9 pr-9 disabled:cursor-not-allowed disabled:opacity-60`}
                 />
                 <button
@@ -102,6 +102,7 @@ const Admin = () => {
                   value={userEmail}
                   onChange={handleOnChange}
                   placeholder="user@company.com"
+                  required
                   className={`${inputField} pl-9 disabled:cursor-not-allowed disabled:opacity-60`}
                 />
               </div>
@@ -124,6 +125,7 @@ const Admin = () => {
                   value={newPassword}
                   onChange={handleOnChange}
                   placeholder="••••••••"
+                  required
                   className={`${inputField} pl-9 pr-9 disabled:cursor-not-allowed disabled:opacity-60`}
                 />
                 <button

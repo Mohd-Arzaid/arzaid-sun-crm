@@ -1,12 +1,20 @@
 import express from "express";
 const app = express();
 import dotenv from "dotenv";
+import cors from "cors";
 import connectDB from "./utils/db.js";
-
+import authRoute from "./routes/auth.route.js";
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // Testing the server
 app.get("/", (req, res) => {
@@ -15,6 +23,9 @@ app.get("/", (req, res) => {
     message: "Server is up and running ...",
   });
 });
+
+// APIs
+app.use("/api/v1/auth", authRoute);
 
 app.listen(PORT, () => {
   connectDB();
