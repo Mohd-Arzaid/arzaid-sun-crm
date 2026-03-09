@@ -12,6 +12,8 @@ export const createApplicantAndProductInformation = async (req, res) => {
       address,
     } = req.body;
 
+    const userId = req.user?.id;
+
     if (
       !indianStandard ||
       !productName ||
@@ -27,10 +29,18 @@ export const createApplicantAndProductInformation = async (req, res) => {
       });
     }
 
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unable to identify user from authentication token.",
+      });
+    }
+
     const document = await ApplicantAndProductInformation.create({
       indianStandard: indianStandard.trim(),
       productName: productName.trim(),
       contactPersonName: contactPersonName.trim(),
+      userId,
       email: email.toLowerCase().trim(),
       phoneNumber: phoneNumber.trim(),
       countryName: countryName.trim(),
@@ -63,9 +73,9 @@ export const createApplicantAndProductInformation = async (req, res) => {
 
 export const getApplicantAndProductInformation = async (req, res) => {
   try {
-    const userEmail = req.user?.email;
+    const userId = req.user?.id;
 
-    if (!userEmail) {
+    if (!userId) {
       return res.status(401).json({
         success: false,
         message: "Unable to identify user from authentication token.",
@@ -73,7 +83,7 @@ export const getApplicantAndProductInformation = async (req, res) => {
     }
 
     const document = await ApplicantAndProductInformation.findOne({
-      email: userEmail.toLowerCase().trim(),
+      userId,
     });
 
     if (!document) {
