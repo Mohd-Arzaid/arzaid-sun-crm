@@ -60,3 +60,48 @@ export const createApplicantAndProductInformation = async (req, res) => {
     });
   }
 };
+
+export const getApplicantAndProductInformation = async (req, res) => {
+  try {
+    const userEmail = req.user?.email;
+
+    if (!userEmail) {
+      return res.status(401).json({
+        success: false,
+        message: "Unable to identify user from authentication token.",
+      });
+    }
+
+    const document = await ApplicantAndProductInformation.findOne({
+      email: userEmail.toLowerCase().trim(),
+    });
+
+    if (!document) {
+      return res.status(404).json({
+        success: false,
+        message: "Applicant & Product Information not found for this user.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: document._id,
+        indianStandard: document.indianStandard,
+        productName: document.productName,
+        contactPersonName: document.contactPersonName,
+        email: document.email,
+        phoneNumber: document.phoneNumber,
+        countryName: document.countryName,
+        address: document.address,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Server error while fetching Applicant & Product Information. Please try again.",
+    });
+  }
+};
