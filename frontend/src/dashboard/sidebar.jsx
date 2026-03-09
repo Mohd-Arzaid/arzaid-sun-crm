@@ -1,5 +1,6 @@
 import { House, LogOut, MessageSquarePlus, Upload } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "@/api-services/auth-api";
 
 const navLinkBase =
   "flex items-center gap-2 rounded-lg px-2 py-2 h-8 my-px transition-opacity hover:opacity-70";
@@ -8,6 +9,8 @@ const buttonBase =
   "flex h-8 items-center gap-2 px-3 transition-opacity hover:opacity-70";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="fixed top-0 left-0 flex h-screen w-60 flex-col gap-3 overflow-y-auto overflow-x-hidden border-r border-white/10 bg-black text-white">
       <div className="grid gap-1 items-start px-3 py-5 text-sm font-medium">
@@ -50,7 +53,11 @@ const Sidebar = () => {
       </div>
 
       <div className="mt-auto grid items-start px-2 pb-5 text-sm font-medium">
-        <button type="button" className={`${buttonBase} text-destructive`}>
+        <button
+          type="button"
+          className={`${buttonBase} text-destructive`}
+          onClick={() => logout(navigate)}
+        >
           <LogOut className="h-4 w-4" />
           Log Out
         </button>
