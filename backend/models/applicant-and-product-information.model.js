@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const applicantAndProductInformationSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     indianStandard: {
       type: String,
       required: true,
@@ -16,11 +21,6 @@ const applicantAndProductInformationSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
     },
     email: {
       type: String,
@@ -51,4 +51,3 @@ export const ApplicantAndProductInformation = mongoose.model(
   "ApplicantAndProductInformation",
   applicantAndProductInformationSchema
 );
-

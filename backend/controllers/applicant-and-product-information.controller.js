@@ -2,6 +2,15 @@ import { ApplicantAndProductInformation } from "../models/applicant-and-product-
 
 export const createApplicantAndProductInformation = async (req, res) => {
   try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unable to identify user from authentication token.",
+      });
+    }
+
     const {
       indianStandard,
       productName,
@@ -11,8 +20,6 @@ export const createApplicantAndProductInformation = async (req, res) => {
       countryName,
       address,
     } = req.body;
-
-    const userId = req.user?.id;
 
     if (
       !indianStandard ||
@@ -29,18 +36,11 @@ export const createApplicantAndProductInformation = async (req, res) => {
       });
     }
 
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Unable to identify user from authentication token.",
-      });
-    }
-
     const document = await ApplicantAndProductInformation.create({
+      userId,
       indianStandard: indianStandard.trim(),
       productName: productName.trim(),
       contactPersonName: contactPersonName.trim(),
-      userId,
       email: email.toLowerCase().trim(),
       phoneNumber: phoneNumber.trim(),
       countryName: countryName.trim(),
