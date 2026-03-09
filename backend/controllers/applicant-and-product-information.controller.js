@@ -59,5 +59,4 @@ export const createApplicantAndProductInformation = async (req, res) => {
         "Server error while saving Applicant & Product Information. Please try again.",
     });
   }
-}
-
+};
