@@ -1,26 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
+import { useApplicantAndProductInformationStore } from "@/store/applicant-and-product-information-store";
+import { submitApplicantAndProductInformation } from "@/api-services/applicant-and-product-information-api";
 
 const ApplicantAndProductInformation = () => {
-  const [formData, setFormData] = useState({
-    indianStandard: "",
-    productName: "",
-    contactPersonName: "",
-    email: "",
-    phoneNumber: "",
-    countryName: "",
-    address: "",
-  });
+  const formData = useApplicantAndProductInformationStore(
+    (state) => state.formData
+  );
+  const loading = useApplicantAndProductInformationStore(
+    (state) => state.loading
+  );
+  const setField = useApplicantAndProductInformationStore(
+    (state) => state.setField
+  );
 
   const handleChange = (field) => (event) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: event.target.value,
-    }));
+    setField(field, event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Applicant & Product Information form data:", formData);
+    await submitApplicantAndProductInformation(formData);
   };
 
   return (
@@ -129,9 +128,10 @@ const ApplicantAndProductInformation = () => {
         <div className="col-span-2">
           <button
             type="submit"
+            disabled={loading}
             className="w-full px-6 py-2.5 rounded-lg bg-neutral-900 text-white text-base font-medium hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-900 transition-colors"
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>
