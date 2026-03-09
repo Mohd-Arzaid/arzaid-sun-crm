@@ -1,6 +1,6 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/is-authenticated";
-import { createApplicantAndProductInformation } from "../controllers/applicant-and-product-information.controller";
+import { isAuthenticated } from "../middlewares/is-authenticated.js";
+import { createApplicantAndProductInformation } from "../controllers/applicant-and-product-information.controller.js";
 
 const router = express.Router();
 
