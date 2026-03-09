@@ -2,7 +2,14 @@ import jwt from "jsonwebtoken";
 
 export const isAuthenticated = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const authHeader = req.header("Authorization");
+    if (!authHeader || typeof authHeader !== "string") {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication token is missing",
+      });
+    }
+    const token = authHeader.replace("Bearer ", "").trim();
     if (!token) {
       return res.status(401).json({
         success: false,
