@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useApplicantAndProductInformationStore } from "@/store/applicant-and-product-information-store";
 import { submitApplicantAndProductInformation } from "@/api-services/applicant-and-product-information-api";
 
+const initialFormState = {
+  indianStandard: "",
+  productName: "",
+  contactPersonName: "",
+  email: "",
+  phoneNumber: "",
+  countryName: "",
+  address: "",
+};
+
 const ApplicantAndProductInformation = () => {
-  const formData = useApplicantAndProductInformationStore(
-    (state) => state.formData
-  );
+  const [formData, setFormData] = useState(initialFormState);
   const loading = useApplicantAndProductInformationStore(
     (state) => state.loading
   );
-  const setField = useApplicantAndProductInformationStore(
-    (state) => state.setField
-  );
 
   const handleChange = (field) => (event) => {
-    setField(field, event.target.value);
+    const value = event.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = async (event) => {
