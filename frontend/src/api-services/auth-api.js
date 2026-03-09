@@ -32,3 +32,32 @@ export const setUserPassword = async (email, password, adminSecretKey) => {
     setLoading(false);
   }
 };
+
+export const login = async (email, password, navigate) => {
+  const setLoading = useAuthStore.getState().setLoading;
+  const setToken = useAuthStore.getState().setToken;
+  setLoading(true);
+  try {
+      const response = await axios.post(
+          `${BASE_URL}/auth/login`,
+          { email, password },
+          { withCredentials: true }
+      );
+      // console.log("LOGIN RESPONSE : ",response);
+      if (!response.data.success) {
+          toast.error(response.data.message, { position: "bottom-right" });
+          return;
+      }
+      toast.success(response.data.message, { position: "bottom-right" });
+      setToken(response.data.token);
+      navigate("/dashboard");
+  } catch (error) {
+       // console.log("LOGIN ERROR : ",error);
+       toast.error(
+          error.response?.data?.message || "Failed to Login",
+          { position: "bottom-right" }
+      );
+  } finally {
+      setLoading(false);
+  }
+}
