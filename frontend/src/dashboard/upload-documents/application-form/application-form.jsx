@@ -10,13 +10,140 @@ import {
 } from "@/components/ui/table";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-const ApplicationForm = () => {
-  const [managementDetails, setManagementDetails] = useState([
-    { name: "", designation: "" },
-  ]);
+const initialFormState = {
+  // Full Name of Firm
+  fullNameOfFirm: "",
 
-  const [qualityControlInchargeDetails, setQualityControlInchargeDetails] =
-    useState([{ name: "", designation: "" }]);
+  // Office details
+  officeAddress: "",
+  officeTelephone: "",
+  officeFax: "",
+  officeEmail: "",
+  officeVillageCity: "",
+  officeDistrict: "",
+  officeState: "",
+  officeCountry: "",
+  officePinCode: "",
+
+  // Factory details
+  factoryAddress: "",
+  factoryTelephone: "",
+  factoryFax: "",
+  factoryEmail: "",
+  factoryVillageCity: "",
+  factoryDistrict: "",
+  factoryState: "",
+  factoryCountry: "",
+  factoryPinCode: "",
+
+  // Management details
+  managementDetails: [{ name: "", designation: "" }],
+
+  // Quality control incharge details
+  qualityControlInchargeDetails: [{ name: "", designation: "" }],
+
+  // Contact person
+  contactName: "",
+  contactTelephone: "",
+  contactEmail: "",
+
+  // Sector
+  sector: "public",
+
+  // Indian Standard details
+  indianStandardIS: "",
+  indianStandardPart: "",
+  indianStandardSec: "",
+  indianStandardYear: "",
+
+  // Production details
+  unitsOfProduction: "",
+  presentInstalledCapacity: "",
+  productionQuantity: "",
+  productionValue: "",
+
+  // Fee details
+  feeAmount: "",
+  feeInvoiceNo: "",
+  feeDate: "",
+};
+
+const ApplicationForm = () => {
+  const [formData, setFormData] = useState(initialFormState);
+
+  const handleChange = (field) => (event) => {
+    const value = event.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleManagementChange = (index, field) => (event) => {
+    const value = event.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      managementDetails: prev.managementDetails.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      ),
+    }));
+  };
+
+  const handleQualityControlInchargeChange = (index, field) => (event) => {
+    const value = event.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      qualityControlInchargeDetails: prev.qualityControlInchargeDetails.map(
+        (item, i) => (i === index ? { ...item, [field]: value } : item)
+      ),
+    }));
+  };
+
+  const addManagementRow = () => {
+    setFormData((prev) => ({
+      ...prev,
+      managementDetails: [
+        ...prev.managementDetails,
+        { name: "", designation: "" },
+      ],
+    }));
+  };
+
+  const removeManagementRow = (index) => {
+    setFormData((prev) => {
+      if (prev.managementDetails.length === 1) return prev;
+      return {
+        ...prev,
+        managementDetails: prev.managementDetails.filter((_, i) => i !== index),
+      };
+    });
+  };
+
+  const addQualityControlInchargeRow = () => {
+    setFormData((prev) => ({
+      ...prev,
+      qualityControlInchargeDetails: [
+        ...prev.qualityControlInchargeDetails,
+        { name: "", designation: "" },
+      ],
+    }));
+  };
+
+  const removeQualityControlInchargeRow = (index) => {
+    setFormData((prev) => {
+      if (prev.qualityControlInchargeDetails.length === 1) return prev;
+      return {
+        ...prev,
+        qualityControlInchargeDetails:
+          prev.qualityControlInchargeDetails.filter((_, i) => i !== index),
+      };
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("APPLICATION FORM SUBMIT DATA:", formData);
+  };
 
   return (
     <>
@@ -24,7 +151,10 @@ const ApplicationForm = () => {
         Application Form
       </div>
 
-      <div className="border border-neutral-200 rounded-lg p-4 flex flex-col gap-6">
+      <form
+        onSubmit={handleSubmit}
+        className="border border-neutral-200 rounded-lg p-4 flex flex-col gap-6"
+      >
         {/* Full Name of Firm */}
         <div className="border border-neutral-200 rounded-lg p-4">
           <div className="flex flex-col gap-1.5">
@@ -35,6 +165,9 @@ const ApplicationForm = () => {
               type="text"
               placeholder="Enter Full Name of Firm"
               className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.fullNameOfFirm}
+                onChange={handleChange("fullNameOfFirm")}
             />
           </div>
         </div>
@@ -54,6 +187,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Address"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeAddress}
+                  onChange={handleChange("officeAddress")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -64,6 +200,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Telephone Number"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeTelephone}
+                  onChange={handleChange("officeTelephone")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -74,6 +213,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Fax Number"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeFax}
+                  onChange={handleChange("officeFax")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -84,6 +226,9 @@ const ApplicationForm = () => {
                   type="email"
                   placeholder="Enter Email ID"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeEmail}
+                  onChange={handleChange("officeEmail")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -94,6 +239,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Village / City"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeVillageCity}
+                  onChange={handleChange("officeVillageCity")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -104,6 +252,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter District"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeDistrict}
+                  onChange={handleChange("officeDistrict")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -114,6 +265,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter State"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeState}
+                  onChange={handleChange("officeState")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -124,6 +278,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Country"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officeCountry}
+                  onChange={handleChange("officeCountry")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -134,6 +291,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Pin Code"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.officePinCode}
+                  onChange={handleChange("officePinCode")}
                 />
               </div>
             </div>
@@ -152,6 +312,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Address"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryAddress}
+                  onChange={handleChange("factoryAddress")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -162,6 +325,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Telephone Number"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryTelephone}
+                  onChange={handleChange("factoryTelephone")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -172,6 +338,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Fax Number"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryFax}
+                  onChange={handleChange("factoryFax")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -182,6 +351,9 @@ const ApplicationForm = () => {
                   type="email"
                   placeholder="Enter Email ID"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryEmail}
+                  onChange={handleChange("factoryEmail")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -192,6 +364,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Village / City"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryVillageCity}
+                  onChange={handleChange("factoryVillageCity")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -202,6 +377,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter District"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryDistrict}
+                  onChange={handleChange("factoryDistrict")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -212,6 +390,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter State"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryState}
+                  onChange={handleChange("factoryState")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -222,6 +403,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Country"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryCountry}
+                  onChange={handleChange("factoryCountry")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -232,6 +416,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Pin Code"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.factoryPinCode}
+                  onChange={handleChange("factoryPinCode")}
                 />
               </div>
             </div>
@@ -246,12 +433,7 @@ const ApplicationForm = () => {
             </h3>
             <button
               type="button"
-              onClick={() =>
-                setManagementDetails((prev) => [
-                  ...prev,
-                  { name: "", designation: "" },
-                ])
-              }
+              onClick={addManagementRow}
               className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md border border-input bg-background px-3 text-sm font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <Plus className="h-4 w-4" />
@@ -277,7 +459,7 @@ const ApplicationForm = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {managementDetails.map((row, index) => (
+                {formData.managementDetails.map((row, index) => (
                   <TableRow
                     key={index}
                     className="border-neutral-100 last:border-b-0 hover:bg-transparent"
@@ -292,14 +474,7 @@ const ApplicationForm = () => {
                         className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         required
                         value={row.name}
-                        onChange={(event) => {
-                          const value = event.target.value;
-                          setManagementDetails((prev) =>
-                            prev.map((item, i) =>
-                              i === index ? { ...item, name: value } : item
-                            )
-                          );
-                        }}
+                        onChange={handleManagementChange(index, "name")}
                       />
                     </TableCell>
                     <TableCell className="px-4 py-2">
@@ -309,27 +484,14 @@ const ApplicationForm = () => {
                         className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         required
                         value={row.designation}
-                        onChange={(event) => {
-                          const value = event.target.value;
-                          setManagementDetails((prev) =>
-                            prev.map((item, i) =>
-                              i === index
-                                ? { ...item, designation: value }
-                                : item
-                            )
-                          );
-                        }}
+                        onChange={handleManagementChange(index, "designation")}
                       />
                     </TableCell>
                     <TableCell className="pl-2 pr-4 py-2.5 align-middle">
                       <button
                         type="button"
-                        disabled={managementDetails.length === 1}
-                        onClick={() =>
-                          setManagementDetails((prev) =>
-                            prev.filter((_, i) => i !== index)
-                          )
-                        }
+                        disabled={formData.managementDetails.length === 1}
+                        onClick={() => removeManagementRow(index)}
                         className="text-sm w-full text-center font-medium text-destructive hover:underline focus:outline-none focus:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
                       >
                         Remove
@@ -350,12 +512,7 @@ const ApplicationForm = () => {
             </h3>
             <button
               type="button"
-              onClick={() =>
-                setQualityControlInchargeDetails((prev) => [
-                  ...prev,
-                  { name: "", designation: "" },
-                ])
-              }
+              onClick={addQualityControlInchargeRow}
               className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md border border-input bg-background px-3 text-sm font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <Plus className="h-4 w-4" />
@@ -381,7 +538,7 @@ const ApplicationForm = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {qualityControlInchargeDetails.map((row, index) => (
+                {formData.qualityControlInchargeDetails.map((row, index) => (
                   <TableRow
                     key={index}
                     className="border-neutral-100 last:border-b-0 hover:bg-transparent"
@@ -396,14 +553,10 @@ const ApplicationForm = () => {
                         className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         required
                         value={row.name}
-                        onChange={(event) => {
-                          const value = event.target.value;
-                          setQualityControlInchargeDetails((prev) =>
-                            prev.map((item, i) =>
-                              i === index ? { ...item, name: value } : item
-                            )
-                          );
-                        }}
+                        onChange={handleQualityControlInchargeChange(
+                          index,
+                          "name"
+                        )}
                       />
                     </TableCell>
                     <TableCell className="px-4 py-2">
@@ -413,27 +566,19 @@ const ApplicationForm = () => {
                         className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         required
                         value={row.designation}
-                        onChange={(event) => {
-                          const value = event.target.value;
-                          setQualityControlInchargeDetails((prev) =>
-                            prev.map((item, i) =>
-                              i === index
-                                ? { ...item, designation: value }
-                                : item
-                            )
-                          );
-                        }}
+                        onChange={handleQualityControlInchargeChange(
+                          index,
+                          "designation"
+                        )}
                       />
                     </TableCell>
                     <TableCell className="pl-2 pr-4 py-2.5 align-middle">
                       <button
                         type="button"
-                        disabled={qualityControlInchargeDetails.length === 1}
-                        onClick={() =>
-                          setQualityControlInchargeDetails((prev) =>
-                            prev.filter((_, i) => i !== index)
-                          )
+                        disabled={
+                          formData.qualityControlInchargeDetails.length === 1
                         }
+                        onClick={() => removeQualityControlInchargeRow(index)}
                         className="text-sm w-full text-center font-medium text-destructive hover:underline focus:outline-none focus:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
                       >
                         Remove
@@ -460,6 +605,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Name"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.contactName}
+                onChange={handleChange("contactName")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -470,6 +618,9 @@ const ApplicationForm = () => {
                 type="tel"
                 placeholder="Enter Telephone Number"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.contactTelephone}
+                onChange={handleChange("contactTelephone")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -480,6 +631,9 @@ const ApplicationForm = () => {
                 type="email"
                 placeholder="Enter Email ID"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.contactEmail}
+                onChange={handleChange("contactEmail")}
               />
             </div>
           </div>
@@ -488,7 +642,13 @@ const ApplicationForm = () => {
         {/* Sector Details */}
         <div className="border border-neutral-200 rounded-lg p-4 flex flex-col gap-4">
           <div className="text-base font-medium text-neutral-900">Sector</div>
-          <RadioGroup defaultValue="public" className="flex gap-4">
+          <RadioGroup
+            value={formData.sector}
+            onValueChange={(value) =>
+              setFormData((prev) => ({ ...prev, sector: value }))
+            }
+            className="flex gap-4"
+          >
             <div className="flex items-center gap-2">
               <RadioGroupItem value="public" id="sector-public" />
               <label
@@ -524,6 +684,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter IS"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.indianStandardIS}
+                onChange={handleChange("indianStandardIS")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -534,6 +697,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Part"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.indianStandardPart}
+                onChange={handleChange("indianStandardPart")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -544,6 +710,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Sec"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.indianStandardSec}
+                onChange={handleChange("indianStandardSec")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -554,6 +723,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Year"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.indianStandardYear}
+                onChange={handleChange("indianStandardYear")}
               />
             </div>
           </div>
@@ -570,6 +742,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Units of Production"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.unitsOfProduction}
+                onChange={handleChange("unitsOfProduction")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -580,6 +755,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Present Installed Capacity"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.presentInstalledCapacity}
+                onChange={handleChange("presentInstalledCapacity")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -590,6 +768,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Quantity"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.productionQuantity}
+                onChange={handleChange("productionQuantity")}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -600,6 +781,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Value"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.productionValue}
+                onChange={handleChange("productionValue")}
               />
             </div>
           </div>
@@ -619,6 +803,9 @@ const ApplicationForm = () => {
                 type="text"
                 placeholder="Enter Amount"
                 className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                required
+                value={formData.feeAmount}
+                onChange={handleChange("feeAmount")}
               />
             </div>
 
@@ -631,6 +818,9 @@ const ApplicationForm = () => {
                   type="text"
                   placeholder="Enter Invoice No"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.feeInvoiceNo}
+                  onChange={handleChange("feeInvoiceNo")}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -641,22 +831,25 @@ const ApplicationForm = () => {
                   type="date"
                   placeholder="Enter Date"
                   className="w-full rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  value={formData.feeDate}
+                  onChange={handleChange("feeDate")}
                 />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Submit / Navigation Buttons */}
+        {/* Submit Button */}
         <div>
           <button
-            type="button"
+            type="submit"
             className="w-full px-6 py-2.5 rounded-lg bg-neutral-900 text-white text-base font-medium hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-900 transition-colors"
           >
             Submit
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 };
