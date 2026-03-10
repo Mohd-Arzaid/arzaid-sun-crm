@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Plus } from "lucide-react";
 import {
   Table,
@@ -11,6 +11,12 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const ApplicationForm = () => {
+  const [managementDetails, setManagementDetails] = useState([
+    { name: "", designation: "" },
+  ]);
+
+  const [qcDetails, setQcDetails] = useState([{ name: "", designation: "" }]);
+
   return (
     <>
       <div className="text-2xl font-medium text-neutral-900">
@@ -239,6 +245,12 @@ const ApplicationForm = () => {
             </h3>
             <button
               type="button"
+              onClick={() =>
+                setManagementDetails((prev) => [
+                  ...prev,
+                  { name: "", designation: "" },
+                ])
+              }
               className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md border border-input bg-background px-3 text-sm font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <Plus className="h-4 w-4" />
@@ -264,33 +276,66 @@ const ApplicationForm = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow className="border-neutral-100 last:border-b-0 hover:bg-transparent">
-                  <TableCell className="pl-4 pr-2 py-2.5 text-neutral-600 whitespace-nowrap align-middle text-center">
-                    1
-                  </TableCell>
-                  <TableCell className="px-4 py-2">
-                    <input
-                      type="text"
-                      placeholder="Enter Name"
-                      className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    />
-                  </TableCell>
-                  <TableCell className="px-4 py-2">
-                    <input
-                      type="text"
-                      placeholder="Enter Designation"
-                      className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    />
-                  </TableCell>
-                  <TableCell className="pl-2 pr-4 py-2.5 align-middle">
-                    <button
-                      type="button"
-                      className="text-sm w-full text-center font-medium text-destructive hover:underline focus:outline-none focus:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
-                    >
-                      Remove
-                    </button>
-                  </TableCell>
-                </TableRow>
+                {managementDetails.map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className="border-neutral-100 last:border-b-0 hover:bg-transparent"
+                  >
+                    <TableCell className="pl-4 pr-2 py-2.5 text-neutral-600 whitespace-nowrap align-middle text-center">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <input
+                        type="text"
+                        placeholder="Enter Name"
+                        className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        required
+                        value={row.name}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setManagementDetails((prev) =>
+                            prev.map((item, i) =>
+                              i === index ? { ...item, name: value } : item
+                            )
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <input
+                        type="text"
+                        placeholder="Enter Designation"
+                        className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        required
+                        value={row.designation}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setManagementDetails((prev) =>
+                            prev.map((item, i) =>
+                              i === index
+                                ? { ...item, designation: value }
+                                : item
+                            )
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className="pl-2 pr-4 py-2.5 align-middle">
+                      <button
+                        type="button"
+                        disabled={managementDetails.length === 1}
+                        onClick={() =>
+                          setManagementDetails((prev) =>
+                            prev.filter((_, i) => i !== index)
+                          )
+                        }
+                        className="text-sm w-full text-center font-medium text-destructive hover:underline focus:outline-none focus:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
+                      >
+                        Remove
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>
@@ -304,6 +349,9 @@ const ApplicationForm = () => {
             </h3>
             <button
               type="button"
+              onClick={() =>
+                setQcDetails((prev) => [...prev, { name: "", designation: "" }])
+              }
               className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md border border-input bg-background px-3 text-sm font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <Plus className="h-4 w-4" />
@@ -329,33 +377,66 @@ const ApplicationForm = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow className="border-neutral-100 last:border-b-0 hover:bg-transparent">
-                  <TableCell className="pl-4 pr-2 py-2.5 text-neutral-600 whitespace-nowrap align-middle text-center">
-                    1
-                  </TableCell>
-                  <TableCell className="px-4 py-2">
-                    <input
-                      type="text"
-                      placeholder="Enter Name"
-                      className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    />
-                  </TableCell>
-                  <TableCell className="px-4 py-2">
-                    <input
-                      type="text"
-                      placeholder="Enter Designation"
-                      className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    />
-                  </TableCell>
-                  <TableCell className="pl-2 pr-4 py-2.5 align-middle">
-                    <button
-                      type="button"
-                      className="text-sm w-full text-center font-medium text-destructive hover:underline focus:outline-none focus:underline"
-                    >
-                      Remove
-                    </button>
-                  </TableCell>
-                </TableRow>
+                {qcDetails.map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className="border-neutral-100 last:border-b-0 hover:bg-transparent"
+                  >
+                    <TableCell className="pl-4 pr-2 py-2.5 text-neutral-600 whitespace-nowrap align-middle text-center">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <input
+                        type="text"
+                        placeholder="Enter Name"
+                        className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        required
+                        value={row.name}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setQcDetails((prev) =>
+                            prev.map((item, i) =>
+                              i === index ? { ...item, name: value } : item
+                            )
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <input
+                        type="text"
+                        placeholder="Enter Designation"
+                        className="w-full min-w-0 rounded-lg border px-3 py-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        required
+                        value={row.designation}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setQcDetails((prev) =>
+                            prev.map((item, i) =>
+                              i === index
+                                ? { ...item, designation: value }
+                                : item
+                            )
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className="pl-2 pr-4 py-2.5 align-middle">
+                      <button
+                        type="button"
+                        disabled={qcDetails.length === 1}
+                        onClick={() =>
+                          setQcDetails((prev) =>
+                            prev.filter((_, i) => i !== index)
+                          )
+                        }
+                        className="text-sm w-full text-center font-medium text-destructive hover:underline focus:outline-none focus:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
+                      >
+                        Remove
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>
