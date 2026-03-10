@@ -6,6 +6,7 @@ import connectDB from "./utils/db.js";
 import authRoute from "./routes/auth.route.js";
 import applicantAndProductInformationRoute from "./routes/applicant-and-product-information.route.js";
 import applicationFormRoute from "./routes/application-form.route.js";
+import applicationProgressRoute from "./routes/application-progress.route.js";
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
@@ -32,6 +33,7 @@ app.use(
   applicantAndProductInformationRoute
 );
 app.use("/api/v1/application-form", applicationFormRoute);
+app.use("/api/v1/application-progress", applicationProgressRoute);
 app.listen(PORT, () => {
   connectDB();
   console.log(`Server is running on port ${PORT}`);
