@@ -15,7 +15,8 @@ const ApplicationForm = () => {
     { name: "", designation: "" },
   ]);
 
-  const [qcDetails, setQcDetails] = useState([{ name: "", designation: "" }]);
+  const [qualityControlInchargeDetails, setQualityControlInchargeDetails] =
+    useState([{ name: "", designation: "" }]);
 
   return (
     <>
@@ -350,7 +351,10 @@ const ApplicationForm = () => {
             <button
               type="button"
               onClick={() =>
-                setQcDetails((prev) => [...prev, { name: "", designation: "" }])
+                setQualityControlInchargeDetails((prev) => [
+                  ...prev,
+                  { name: "", designation: "" },
+                ])
               }
               className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md border border-input bg-background px-3 text-sm font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
@@ -377,7 +381,7 @@ const ApplicationForm = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {qcDetails.map((row, index) => (
+                {qualityControlInchargeDetails.map((row, index) => (
                   <TableRow
                     key={index}
                     className="border-neutral-100 last:border-b-0 hover:bg-transparent"
@@ -394,7 +398,7 @@ const ApplicationForm = () => {
                         value={row.name}
                         onChange={(event) => {
                           const value = event.target.value;
-                          setQcDetails((prev) =>
+                          setQualityControlInchargeDetails((prev) =>
                             prev.map((item, i) =>
                               i === index ? { ...item, name: value } : item
                             )
@@ -411,7 +415,7 @@ const ApplicationForm = () => {
                         value={row.designation}
                         onChange={(event) => {
                           const value = event.target.value;
-                          setQcDetails((prev) =>
+                          setQualityControlInchargeDetails((prev) =>
                             prev.map((item, i) =>
                               i === index
                                 ? { ...item, designation: value }
@@ -424,9 +428,9 @@ const ApplicationForm = () => {
                     <TableCell className="pl-2 pr-4 py-2.5 align-middle">
                       <button
                         type="button"
-                        disabled={qcDetails.length === 1}
+                        disabled={qualityControlInchargeDetails.length === 1}
                         onClick={() =>
-                          setQcDetails((prev) =>
+                          setQualityControlInchargeDetails((prev) =>
                             prev.filter((_, i) => i !== index)
                           )
                         }
