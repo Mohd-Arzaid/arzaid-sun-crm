@@ -34,7 +34,7 @@ const ApplicantAndProductInformation = () => {
   return (
     <>
       <div className="text-2xl font-medium text-neutral-900">
-        Applicant & Product Information
+        Applicant & Product Information Form
       </div>
 
       <form
