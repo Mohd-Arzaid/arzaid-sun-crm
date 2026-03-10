@@ -24,7 +24,7 @@ const Sidebar = () => {
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to="/upload-documents"
+          to="/application-form"
           className={({ isActive }) =>
             `${navLinkBase} ${isActive ? "bg-neutral-800" : ""}`
           }
