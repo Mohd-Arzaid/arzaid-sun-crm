@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import { useApplicationFormStore } from "@/store/application-form-store";
+import { createApplicationForm } from "@/api-services/application-form-api";
 import {
   Table,
   TableBody,
@@ -70,6 +72,7 @@ const initialFormState = {
 
 const ApplicationForm = () => {
   const [formData, setFormData] = useState(initialFormState);
+  const loading = useApplicationFormStore((state) => state.loading);
 
   const handleChange = (field) => (event) => {
     const value = event.target.value;
@@ -140,9 +143,10 @@ const ApplicationForm = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("APPLICATION FORM SUBMIT DATA:", formData);
+    await createApplicationForm(formData);
   };
 
   return (
@@ -844,9 +848,10 @@ const ApplicationForm = () => {
         <div>
           <button
             type="submit"
-            className="w-full px-6 py-2.5 rounded-lg bg-neutral-900 text-white text-base font-medium hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-900 transition-colors"
+            disabled={loading}
+            className="w-full px-6 py-2.5 rounded-lg bg-neutral-900 text-white text-base font-medium hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-900 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>
