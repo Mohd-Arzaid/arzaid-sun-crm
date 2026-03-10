@@ -38,14 +38,16 @@ const ApplicationFormPage = () => {
 
       if (!applicantFormFilled && !applicationFormFilled) {
         setAlertMessage(
-          "Please fill both forms before proceeding to upload documents."
+          "To continue, please complete both the Applicant & Product Information form and the Application Form before proceeding to upload documents."
         );
       } else if (!applicantFormFilled && applicationFormFilled) {
         setAlertMessage(
-          "Please fill the Applicant & Product Information form before proceeding."
+          "To continue, please complete the Applicant & Product Information form before proceeding to upload documents."
         );
       } else if (applicantFormFilled && !applicationFormFilled) {
-        setAlertMessage("Please fill the Application Form before proceeding.");
+        setAlertMessage(
+          "To continue, please complete the Application Form before proceeding to upload documents."
+        );
       }
 
       setAlertOpen(true);
@@ -81,7 +83,7 @@ const ApplicationFormPage = () => {
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Cannot proceed</AlertDialogTitle>
+          <AlertDialogTitle>Form Incomplete</AlertDialogTitle>
           <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
